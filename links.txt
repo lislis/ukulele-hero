@@ -13,3 +13,25 @@ https://jakearchibald.com/2015/thats-so-fetch/
 http://www.html5rocks.com/en/tutorials/es6/promises/
 
 https://www.youtube.com/watch?v=PnbOWi6f_IM
+
+http://lac.linuxaudio.org/2004/zkm/slides/saturday/steve_harris+joern_nettingsmeier-audio_engineering.pdf
+
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
+
+https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
+
+http://www.html5rocks.com/en/tutorials/webaudio/games/
+
+http://newt.phys.unsw.edu.au/music/note/
+
+http://www.animations.physics.unsw.edu.au/jw/frequency-pitch-sound.htm
+
+http://musicmasterworks.com/WhereMathMeetsMusic.html
+
+https://physics.stackexchange.com/questions/159182/resultant-frequency-if-3-harmonic-notes-a-chord-is-played
+
+
+
+----
+
+http://threejs.org/docs/index.html#Manual/Introduction/Matrix_transformations
