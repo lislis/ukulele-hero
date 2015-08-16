@@ -1,0 +1,15 @@
+https://developer.tizen.org/community/tip-tech/advanced-web-audio-api-usage
+
+http://ianreah.com/2013/02/28/Real-time-analysis-of-streaming-audio-data-with-Web-Audio-API.html
+
+http://fourthof5.com/audio-visualisation-with-the-web-audio-api
+
+https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/decodeAudioData
+
+https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
+
+https://jakearchibald.com/2015/thats-so-fetch/
+
+http://www.html5rocks.com/en/tutorials/es6/promises/
+
+https://www.youtube.com/watch?v=PnbOWi6f_IM
