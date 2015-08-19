@@ -1,0 +1,13 @@
+
+# Loading Audio data
+arraybuffer is a data type that still needs to be put into a format the browser understands
+
+decodeAudioData does just that
+
+the loaded song becomes a browser readable AudioBufferSourceNdoe
+
+You play sounds from a BufferSource
+
+# Visualizing Data
+
+frequency data vs time domain data
