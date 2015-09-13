@@ -23,7 +23,12 @@ var visualizePlayalong = function() {
 
 
   var graphStroke = 5;
-  var graphBase = height - (graphStroke * 10)
+  var graphBase = height - (graphStroke * 10);
+
+  var barMargin = 5;
+  var numOfBars = (offlineFFTArray.length * (songSeconds * 2 / offlineFFTArray.length));
+  var barWidth = Math.floor(width / numOfBars);
+  var actualUsedWidth = numOfBars * barWidth;
 
   var raf;
 
@@ -32,9 +37,33 @@ var visualizePlayalong = function() {
   var draw = function() {
 
     // raf = window.requestAnimationFrame(draw);
-    console.log('drawig');
     ctx.fillRect(0, graphBase, width, graphStroke);
     ctx.fillRect(0, height - (graphStroke * 5), width, graphStroke);
+  
+    for (var i = 0; i < numOfBars; i++) {
+      var barHeight = (Math.max.apply(Math, offlineFFTArray[i]) * 0.8);
+      ctx.fillRect((i * barWidth) + ((width - actualUsedWidth) / 2), graphBase - barHeight, barWidth, barHeight);
+    };
+
+    ctx.font = "20px sans-serif";
+    var prevNote = '';
+    var sampleWidths = actualUsedWidth / offlineFFTArray.length;
+
+    for (var j = 0; j < offlineNotesArray.length; j++) {
+      if (offlineNotesArray[j] !== undefined) {
+        if (prevNote !== offlineNotesArray[j]) {
+          prevNote = offlineNotesArray[j];
+
+          if (offlineNotesArray[j + 1] !== offlineNotesArray[j - 1]) {
+            ctx.fillText(offlineNotesArray[j], (j * sampleWidths) + ((width - actualUsedWidth) / 2), 20);
+            console.log('Drawing: ' + offlineNotesArray[j]);
+          }
+          
+        } else if (prevNote === '') {
+          prevNote = offlineNotesArray[j];
+        }
+      }
+    };
 
   };
   draw();
@@ -53,43 +82,3 @@ var visualizePlayalong = function() {
 // create gain node and make it work
 // also 
 // get new Ctx from input stream, auto correlate
-
-
-function visualizeBar() {
-
-  var canvas = document.querySelector('#bar-graph');
-  var canvasCtx = canvas.getContext("2d");
-  WIDTH = canvas.width;
-  HEIGHT = canvas.height;
-
-  analyser.fftSize = 256;
-  var bufferLength = analyser.frequencyBinCount;
-  console.log(bufferLength);
-  var dataArray = new Uint8Array(bufferLength);
-
-  canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-
-  function draw() {
-    drawVisual = requestAnimationFrame(draw);
-
-    analyser.getByteFrequencyData(dataArray);
-
-    canvasCtx.fillStyle = 'rgb(0, 0, 0)';
-    canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-
-    var barWidth = (WIDTH / bufferLength) * 2.5;
-    var barHeight;
-    var x = 0;
-
-    for(var i = 0; i < bufferLength; i++) {
-      barHeight = dataArray[i];
-
-      canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
-      canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
-
-      x += barWidth + 1;
-    }
-  };
-
-  draw();
-}
