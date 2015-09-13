@@ -1,7 +1,7 @@
 
 var songToPlay, songLength, songSeconds;
 var offlineCtx, offlineAnalyser, offlineProcessor, offlineSource, offlineFFTArray, offlineNotesArray;
-
+var timePlayed;
 
 var getBiggestBin = function(data) {
   var maxVal = Math.max.apply(Math, data);
