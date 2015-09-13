@@ -130,9 +130,15 @@ button:hover {
   padding: 2em;
   width: 90vw;
   margin: auto;
-  background-color: #fff;
+  background-color: #4f9dba;
 
-  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin: auto;
+  height: 80vh;
 }
 
 

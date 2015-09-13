@@ -41,13 +41,12 @@ var visualizePlayalong = function() {
   var draw = function() {
     raf = window.requestAnimationFrame(draw);
     ctx.clearRect(0, 0, width, height);
-    drawIndicator();
+    // drawIndicator();
     drawGraph();
     drawNotes();
   };
 
   var drawIndicator = function() {
-    // indicator
     ctx.fillStyle = "blue";
     var indicatorMaxLength = actualUsedWidth;
     var indicatorStart = (width - actualUsedWidth) / 2;
@@ -69,7 +68,7 @@ var visualizePlayalong = function() {
   };
 
   var drawNotes = function() {
-    ctx.font = "20px sans-serif";
+    ctx.font = "20px League Spartan";
     var prevNote = '';
     var sampleWidths = actualUsedWidth / offlineFFTArray.length;
 
@@ -113,10 +112,3 @@ var visualizePlayalong = function() {
 
   draw();
 };
-
-// normalize notes first??
-// also, but not here:
-// calc score
-// create gain node and make it work
-// also 
-// get new Ctx from input stream, auto correlate

@@ -44,6 +44,7 @@ function prepareOfflineData() {
 
         console.log('done');
         toggleScreen('stage');
+        prepareUserInput();
         visualizePlayalong();
       });
 

@@ -11,6 +11,7 @@
     <script src="js/offline-data.js" defer></script>
     <script src="js/gamelogic.js" defer></script>
     <script src="js/visualize.js" defer></script>
+    <script src="js/input.js" defer></script>
   </head>
   <body>
 
@@ -27,26 +28,20 @@
       </ul>
       <button type="button" data-screen="loading" class="js-toggle is-hidden">choose selected song</button>
     </div>
-    <div id="loading" class="screen">
+    <div id="loading" class="screen is-active">
       <h2>Preparing the stage</h2>
       <div>
         <span class="indicator"></span>
       </div>
     </div>
-    <div id="stage" class="screen is-active">
+    <div id="stage" class="screen">
 
       <div>
-        <div>
-          Score: <span></span>
-        </div>
-        <div>
-          Countdown: <span id="timeleft"></span>
-        </div>
+        <div>Score: <span id="score"></span></div>
+        <div>Countdown: <span id="timeleft"></span></div>
       </div>
       <div>
-        <div>
-          Volume: <input type="range">
-        </div>
+        <div>Volume: <input type="range"></div>
         <div>
           <button type="button" data-screen="" class="js-toggle">Pause</button>
           <button type="button" data-screen="" class="js-toggle">Stop</button>
@@ -60,15 +55,15 @@
       </div>
       
 
-      <div id="allowmic" class="popup">
+      <div id="allowmic" class="popup is-hidden">
         <h2>We need your input!</h2>
         <p>Allow this website to use your computer's microphone, so we can actually hear what you play!</p>
-        <button type="button" data-screen="" class="js-toggle">take the mic</button>
+        <button type="button" data-screen="allowmic">take the mic</button>
       </div>
-      <div id="startgame" class="popup">
+      <div id="startgame" class="popup is-hidden">
         <h2>Sweet!</h2>
         <p>We're all set. Hit the button to start!</p>
-        <button type="button" data-screen="" class="js-toggle">Start</button>
+        <button type="button" data-screen="juststart">Start</button>
       </div>
     </div>
 

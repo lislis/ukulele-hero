@@ -24,3 +24,11 @@ var removeClasses = function(elems, className) {
 document.querySelector('.js-toggle[data-screen="loading"]').addEventListener('click', function(ev) {
   prepareOfflineData();
 });
+
+document.querySelector('[data-screen="allowmic"]').addEventListener('click', function(ev) {
+  prepareUserInput();
+});
+
+document.querySelector('[data-screen="juststart"]').addEventListener('click', function(ev) {
+  gameloop();
+});
