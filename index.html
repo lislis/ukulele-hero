@@ -3,10 +3,80 @@
   <head>
     <meta charset="utf-8">
     <title>Ukulele Hero</title>
-    <script src="js/main.js" async defer></script>
+    <link rel="stylesheet" href="styles/fonts.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- <script src="js/main.js" async defer></script> -->
+    <script src="js/setup.js" defer></script>
+    <script src="js/app-navigation.js" defer></script>
+    <script src="js/offline-data.js" defer></script>
+    <script src="js/visualize.js" defer></script>
   </head>
   <body>
-    <canvas id="sine-wave" width="400" height="300"></canvas>
-    <canvas id="bar-graph" width="400" height="300"></canvas>
+
+    <div id="start" class="screen">
+      <h1>Ukulele Hero</h1>
+      <button type="button" data-screen="choose" class="js-toggle">Start</button>
+    </div>
+    <div id="choose" class="screen">
+      <h2>Choose a song</h2>
+      <ul class="songlist">
+        <li data-url="guitar-loop.wav">Guitar Loop</li>
+        <li data-url="big-jet-plane.mp3">Big Jet Plane</li>
+        <li data-url="chocolates-and-cigarettes.mp3">Chocolates and Cigarettes</li>
+      </ul>
+      <button type="button" data-screen="loading" class="js-toggle is-hidden">choose selected song</button>
+    </div>
+    <div id="loading" class="screen">
+      <h2>Preparing the stage</h2>
+      <div>
+        <span class="indicator"></span>
+      </div>
+    </div>
+    <div id="stage" class="screen is-active">
+
+      <div>
+        <div>
+          Score: <span></span>
+        </div>
+        <div>
+          Countdown: <span></span>
+        </div>
+      </div>
+      <div>
+        <div>
+          Volume: <input type="range">
+        </div>
+        <div>
+          <button type="button" data-screen="" class="js-toggle">Pause</button>
+          <button type="button" data-screen="" class="js-toggle">Stop</button>
+        </div>
+      </div>
+
+      <div>
+        
+        <canvas id="playalong"></canvas>
+
+      </div>
+      
+
+      <div id="allowmic" class="popup">
+        <h2>We need your input!</h2>
+        <p>Allow this website to use your computer's microphone, so we can actually hear what you play!</p>
+        <button type="button" data-screen="" class="js-toggle">take the mic</button>
+      </div>
+      <div id="startgame" class="popup">
+        <h2>Sweet!</h2>
+        <p>We're all set. Hit the button to start!</p>
+        <button type="button" data-screen="" class="js-toggle">Start</button>
+      </div>
+    </div>
+
+    <div id="" class="screen">
+      <h2>You completed <span id="sontitle"></span> with a score of <span class="totalscore"></span>!</h2>
+      <button type="button" data-screen="" class="js-toggle">Start over</button>
+    </div>
+
+<!--     <canvas id="sine-wave" width="400" height="300"></canvas>
+    <canvas id="bar-graph" width="400" height="300"></canvas> -->
   </body>
 </html>

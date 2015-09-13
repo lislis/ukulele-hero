@@ -1,41 +1,55 @@
-var context = new AudioContext();
+// var context = new AudioContext();
 
-var gainNode = context.createGain();
-gainNode.gain.value = 1.2;
+// var gainNode = context.createGain();
+// gainNode.gain.value = 1.2;
 
-var analyser = context.createAnalyser();
-analyser.fftSize = 2048;
-var bufferLength = analyser.frequencyBinCount;
-var dataArray = new Uint8Array(bufferLength);
-analyser.getByteTimeDomainData(dataArray);
-// analyser.getByteFrequencyData(dataArray);
+// var analyser = context.createAnalyser();
+// analyser.fftSize = 64;
+// var bufferLength = analyser.frequencyBinCount;
+// var freqArray = new Uint8Array(bufferLength);
+// var timeArray = new Uint8Array(bufferLength);
+// analyser.getByteTimeDomainData(timeArray);
+// analyser.getByteFrequencyData(freqArray);
 
-var source = context.createBufferSource();
-request = new XMLHttpRequest();
+// var processor = context.createScriptProcessor(1024);
 
-request.open('GET', 'guitar-loop.wav', true);
-request.responseType = 'arraybuffer';
+// processor.onaudioprocess = function(data) {
+//   analyser.getByteTimeDomainData(data);
+//   // console.log(data);
+// }
 
-request.onload = function() {
-  var audioData = request.response;
+// var source = context.createBufferSource();
+// request = new XMLHttpRequest();
 
-  context.decodeAudioData(audioData, function(buffer) {
-      source.buffer = buffer;
+// request.open('GET', 'guitar-loop.wav', true);
+// request.responseType = 'arraybuffer';
 
-      source.connect(analyser);
-      // source.loop = true;
+// request.onload = function() {
+//   var audioData = request.response;
 
-      analyser.connect(gainNode);
+//   context.decodeAudioData(audioData, function(buffer) {
+//       source.buffer = buffer;
 
-      gainNode.connect(context.destination)
+//       console.log(buffer.duration);
+//       console.log(buffer.length);
+//       console.log(buffer.sampleRate);
 
-      source.start();
-    },
+//       source.connect(analyser);
+//       // source.loop = true;
 
-    function(e){"Error with decoding audio data" + e.err});
-}
+//       analyser.connect(processor);
+//       processor.connect(gainNode);
 
-request.send();
+//       gainNode.connect(context.destination)
+
+//       source.start();
+//       // generateSomeOutput();
+//     },
+
+//     function(e){"Error with decoding audio data" + e.err});
+// }
+
+// request.send();
 
 
 // // var oscillator = context.createOscillator();
@@ -62,6 +76,7 @@ function visualizeSine() {
     drawVisual = requestAnimationFrame(draw);
 
     analyser.getByteTimeDomainData(dataArray);
+    // analyser.getByteFrequencyData(dataArray);
 
     canvasCtx.fillStyle = 'rgb(200, 200, 200)';
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -134,5 +149,191 @@ function visualizeBar() {
   draw();
 }
 
-visualizeSine();
-visualizeBar();
+// visualizeSine();
+// visualizeBar();
+
+var audioCtx = new AudioContext();
+var seconds = 60;
+var offlineCtx = new OfflineAudioContext(1, 44100 * seconds, 44100);
+console.log("Ctx sampleRate: " + offlineCtx.sampleRate);
+console.log("Ctx buffer length: " + 44100 * seconds);
+var analyser = offlineCtx.createAnalyser();
+analyser.fftSize = 4096;
+
+var processor = offlineCtx.createScriptProcessor(16384, 1, 1);
+processor.connect(offlineCtx.destination);
+console.log("Processor length: " + processor.bufferSize);
+
+var source = offlineCtx.createBufferSource();
+var i = 0;
+var array = [];
+var noteArray = [];
+// offlineCtx.on
+
+var startTime, stopTime, resultTime;
+
+function getData() {
+  request = new XMLHttpRequest();
+  request.open('GET', 'big-jet-plane.mp3', true);
+  request.responseType = 'arraybuffer';
+
+  function getBiggestBin(data) {
+    var maxVal = Math.max.apply(Math, data);
+    return data.indexOf(maxVal);
+  }
+
+  function calcFreqFromBin(binNum, sampleRate, fftSize) {
+    return (sampleRate/fftSize) * binNum;
+  }
+
+  function noteFromPitch( frequency ) {
+    var noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    var noteNum = 12 * (Math.log( frequency / 440 )/Math.log(2) );
+    var noteString = Math.round( noteNum ) + 69;
+    return noteStrings[noteString%12];
+  }
+
+
+  request.onload = function() {
+    var audioData = request.response;
+
+    offlineCtx.decodeAudioData(audioData, function(buffer) {
+      myBuffer = buffer;
+      source.buffer = myBuffer;
+      source.connect(analyser);
+      analyser.connect(processor);
+      console.log("Analyzer FFT Size: " + analyser.fftSize);
+      processor.onaudioprocess = function(e){
+          var data =  new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(data);
+          // analyser.getFloatTimeDomainData(data);
+          // average = getAverageVolume(data);
+          // max = Math.max.apply(Math, data);
+          // coord = Math.min(average*2,255);
+          // coord = Math.round((max+coord)/2);
+          // ctx.fillStyle=gradient;
+          // ctx.fillRect(i,255-coord,1,255);
+          // console.log(i+' -> '+ data);
+          noteArray.push(noteFromPitch(calcFreqFromBin(getBiggestBin(data), myBuffer.sampleRate, analyser.fftSize)));
+          array.push(data);
+          i++;
+      }
+      source.start();
+      startTime = new Date().getTime();
+      offlineCtx.startRendering().then(function(renderedBuffer) {
+        stopTime = new Date().getTime();
+        resultTime = stopTime - startTime;
+        console.log("Processing took " + resultTime / 100 + " seconds");
+        console.log(array);
+        console.log(noteArray);
+
+      });
+
+      // console.log(analyser.);
+      console.log("Song duration: " + myBuffer.duration);
+      console.log("Buffer length: " + myBuffer.length);
+      console.log("Buffer sampleRate: " + myBuffer.sampleRate);
+      //source.loop = true;
+      // offlineCtx.startRendering().then(function(renderedBuffer) {
+      //   console.log('Rendering completed successfully');
+      //   var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      //   var song = audioCtx.createBufferSource();
+      //   song.buffer = renderedBuffer;
+
+      //   song.connect(audioCtx.destination);
+
+      //   // play.onclick = function() {
+      //   //   song.start();
+      //   // }
+      // }).catch(function(err) {
+      //     console.log('Rendering failed: ' + err);
+      //     // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
+      // });
+    });
+  }
+
+  request.send();
+}
+
+// Run getData to start the process off
+
+getData();
+
+function generateSomeOutput(  ) {
+
+  analyser.fftSize = 32;
+  var bufferLength = analyser.frequencyBinCount;
+  console.log(bufferLength);
+  var dataArray = new Uint8Array(bufferLength);
+
+  // for (var i = 1; i <= source.buffer.length; i++) {
+  //   analyser.getByteFrequencyData(somearray);
+  //   console.log(somearray);
+  // };
+
+
+  function draw() {
+    requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(dataArray);
+    console.log(dataArray);
+    console.log('getByteFrequencyData: ' + dataArray.length);
+  }
+  draw();
+}
+
+// generateSomeOutput();
+var MIN_SAMPLES = 0;
+function autoCorrelate( buf, sampleRate ) {
+  var SIZE = buf.length;
+  var MAX_SAMPLES = Math.floor(SIZE/2);
+  var best_offset = -1;
+  var best_correlation = 0;
+  var rms = 0;
+  var foundGoodCorrelation = false;
+  var correlations = new Array(MAX_SAMPLES);
+
+  for (var i=0;i<SIZE;i++) {
+    var val = buf[i];
+    rms += val*val;
+  }
+  rms = Math.sqrt(rms/SIZE);
+  if (rms<0.01) // not enough signal
+    return -1;
+
+  var lastCorrelation=1;
+  for (var offset = MIN_SAMPLES; offset < MAX_SAMPLES; offset++) {
+    var correlation = 0;
+
+    for (var i=0; i<MAX_SAMPLES; i++) {
+      correlation += Math.abs((buf[i])-(buf[i+offset]));
+    }
+    correlation = 1 - (correlation/MAX_SAMPLES);
+    correlations[offset] = correlation; // store it, for the tweaking we need to do below.
+    if ((correlation>0.9) && (correlation > lastCorrelation)) {
+      foundGoodCorrelation = true;
+      if (correlation > best_correlation) {
+        best_correlation = correlation;
+        best_offset = offset;
+      }
+    } else if (foundGoodCorrelation) {
+      // short-circuit - we found a good correlation, then a bad one, so we'd just be seeing copies from here.
+      // Now we need to tweak the offset - by interpolating between the values to the left and right of the
+      // best offset, and shifting it a bit.  This is complex, and HACKY in this code (happy to take PRs!) -
+      // we need to do a curve fit on correlations[] around best_offset in order to better determine precise
+      // (anti-aliased) offset.
+
+      // we know best_offset >=1, 
+      // since foundGoodCorrelation cannot go to true until the second pass (offset=1), and 
+      // we can't drop into this clause until the following pass (else if).
+      var shift = (correlations[best_offset+1] - correlations[best_offset-1])/correlations[best_offset];  
+      return sampleRate/(best_offset+(8*shift));
+    }
+    lastCorrelation = correlation;
+  }
+  if (best_correlation > 0.01) {
+    // console.log("f = " + sampleRate/best_offset + "Hz (rms: " + rms + " confidence: " + best_correlation + ")")
+    return sampleRate/best_offset;
+  }
+  return -1;
+//  var best_frequency = sampleRate/best_offset;
+}

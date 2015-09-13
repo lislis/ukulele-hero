@@ -1,0 +1,143 @@
+
+
+*, *:after, *:before {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'League Spartan', Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+body, h1, h2 {
+  padding: 0;
+  margin: 0;
+}
+
+.screen {
+  width: 100vw;
+  height: 100vh;
+  background-color: #ed5f87;
+
+  display: none;
+}
+.screen.is-active {
+  display: block;
+}
+
+.songlist {
+  list-style: none;
+  padding: 0;
+  margin: 2em 0 0;
+}
+.songlist li {
+  cursor: pointer;
+  margin-bottom: 1em;
+  padding: 0.5em 0.5em 0.3em;
+  line-height: 1;
+  border: 2px solid transparent;
+}
+.songlist li:hover {
+  background-color: #4f9bd4;
+}
+.songlist li.is-active {
+  padding: 0.5em 0.5em 0.3em;
+  border: 2px solid #4f9bd4;
+  border-radius: 8px;
+}
+
+.is-hidden {
+  display: none;
+}
+
+.indicator {
+  width: 2rem;
+  height: 2rem;
+  display: block;
+  border: 5px solid yellow;
+  border-radius: 50%;
+  position: relative;
+  background: #ed5f87;
+  transform: translate(1rem);
+}
+
+.indicator:before {
+  position: absolute;
+  top: -0.75rem;
+  left: -0.75rem;
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  display: block;
+  border: 3px solid yellow;
+  border-radius: 50%;
+  animation: spinningY 2s infinite ease;
+}
+.indicator:after {
+  position: absolute;
+  top: -0.75rem;
+  left: -0.75rem;
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  display: block;
+  border: 3px solid yellow;
+  border-radius: 50%;
+  animation: spinningX 3s infinite ease 500ms;
+}
+
+@keyframes spinningY {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+@keyframes spinningX {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(360deg);
+  }
+}
+
+button {
+  font-family: 'League Spartan', Arial, sans-serif;
+  background: none;
+  padding: 0.5em 0.5em 0.3em;
+  border: 2px solid #fff866;
+  line-height: 1;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: inherit;
+  color: #fff866;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #748185;
+  color: #fff400;
+  border-color: #fff400;
+}
+
+
+.popup {
+  border-radius: 8px;
+  padding: 2em;
+  width: 90vw;
+  margin: auto;
+  background-color: #fff;
+
+  display: none;
+}
+
+
+canvas {
+  display: block;
+  margin: auto;
+  border: solid;
+}

@@ -30,7 +30,27 @@ http://musicmasterworks.com/WhereMathMeetsMusic.html
 
 https://physics.stackexchange.com/questions/159182/resultant-frequency-if-3-harmonic-notes-a-chord-is-played
 
+http://www.phy.mtu.edu/~suits/notefreqs.html
 
+http://chimera.labs.oreilly.com/books/1234000001552/ch04.html
+
+https://aerotwist.com/blog/guitar-tuner/?utm_source=javascriptweekly&utm_medium=email
+
+https://dsp.stackexchange.com/questions/386/autocorrelation-in-audio-analysis
+
+https://stackoverflow.com/questions/14789283/what-does-the-fft-data-in-the-web-audio-api-correspond-to
+
+https://stackoverflow.com/questions/4364823/how-do-i-obtain-the-frequencies-of-each-value-in-a-fft
+
+https://dsp.stackexchange.com/questions/2818/extracting-frequencies-from-fft
+
+http://blog.neribarnini.me/3d-audio-analyser-with-three-js-and-web-audio-api/
+
+http://www.shreddit-hard-co.re/guitarFuck/pitchdetect.js
+
+http://www.smartjava.org/content/exploring-html5-web-audio-visualizing-sound
+
+https://stackoverflow.com/questions/21011701/offlineaudiocontext-fft-analysis-with-chrome
 
 ----
 

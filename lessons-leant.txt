@@ -1,3 +1,38 @@
+# Audio
+
+Sound comes in periodic waves
+periodicity is perceived as pitch
+Pitch is meassured in frequency (number of times the wave pattern repeats every second) in hertz
+double the wave (higher freq) -> same note, pitch an octave higher
+half the wave (lower freq) -> same note, pitch an octave lower
+
+Octaves are split in 12 semitones
+Detune is measured in cents, an octave consisting of 1200 cents, each semitone of 100 cents
+Detune of 1200 is an ocatve higher, -1200 lower
+
+```
+function playNote(semitones) {
+  // Assume a new source was created from a buffer.
+  var semitoneRatio = Math.pow(2, 1/12);
+  source.playbackRate.value = Math.pow(semitoneRatio, semitones);
+  source.start(0);
+}
+
+function playNote(semitones) {
+  // Assume a new source was created from a buffer.
+  var semitoneRatio = Math.pow(2, 1/12);
+  source.playbackRate.value = Math.pow(semitoneRatio, semitones);
+  source.start(0);
+}
+```
+
+
+Autocorrelation is comparing a soundwave to itself. When it repeats itself you get the fequency and thus the note
+getFloatTimeDomainData populates an array with floating point wave data with values ranging between -1 and 1.
+
+The fftSize property on the AnalyserNode is used to determine how much data you get
+
+
 
 # Loading Audio data
 arraybuffer is a data type that still needs to be put into a format the browser understands
@@ -8,6 +43,23 @@ the loaded song becomes a browser readable AudioBufferSourceNdoe
 
 You play sounds from a BufferSource
 
+An AudioBuffer takes as its parameters a number of channels (1 for mono, 2 for stereo, etc), a length, meaning the number of sample frames inside the buffer, and a sample rate, which is the number of sample frames played per second.
+
 # Visualizing Data
 
 frequency data vs time domain data
+
+time domain, time is x-axis
+freq domain, freq is x-axis in hz
+
+get[...]Data only for a certain point in time
+
+so draw a graph in the beginning for the whole
+then draw real time input on top of it
+
+### page visibility data
+
+
+# Live Audio input
+
+getUserMedia 
