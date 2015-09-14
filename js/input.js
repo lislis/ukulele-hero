@@ -1,5 +1,4 @@
 
-
 var liveCtx = new AudioContext();
 var liveSource, liveAnalyzer;
 var buflen = 1024;
@@ -8,7 +7,6 @@ var MIN_SAMPLES = 0;
 
 var prepareUserInput = function() {
   document.querySelector('#allowmic').classList.remove('is-hidden');
-
   getUserMedia(
   {
     "audio": {
@@ -21,8 +19,6 @@ var prepareUserInput = function() {
       "optional": []
     },
   }, prepareStream);
-
-
 };
 
 var getUserMedia = function(dictionary, callback) {
@@ -46,7 +42,7 @@ var prepareStream = function(stream) {
   liveAnalyser = liveCtx.createAnalyser();
   liveAnalyser.fftSize = 2048;
   liveSource.connect( liveAnalyser );
-  getInputPitch();
+  throttle(getInputPitch(), 1000);
 
   document.querySelector('#allowmic').classList.add('is-hidden');
   document.querySelector('#startgame').classList.remove('is-hidden');
@@ -56,10 +52,19 @@ var getInputPitch = function(time) {
   var cycles = new Array;
   liveAnalyser.getFloatTimeDomainData( buf );
   var ac = autoCorrelate( buf, liveCtx.sampleRate );
-  console.log(ac);
+  var note;
+  if (ac !== -1) {
+    note = noteFromPitch(ac);
+  } else {
+    note = '-';
+  }
+  liveNote = note;
+  document.querySelector('#userplayed').innerHTML = note;
   rafID = window.requestAnimationFrame( getInputPitch );
 }
 
+
+// from https://webaudiodemos.appspot.com/pitchdetect/
 var autoCorrelate = function(buf, sampleRate) {
   var SIZE = buf.length;
   var MAX_SAMPLES = Math.floor(SIZE/2);
@@ -74,7 +79,7 @@ var autoCorrelate = function(buf, sampleRate) {
     rms += val*val;
   }
   rms = Math.sqrt(rms/SIZE);
-  if (rms<0.01) // not enough signal
+  if (rms<0.01)
     return -1;
 
   var lastCorrelation=1;
@@ -93,24 +98,13 @@ var autoCorrelate = function(buf, sampleRate) {
         best_offset = offset;
       }
     } else if (foundGoodCorrelation) {
-      // short-circuit - we found a good correlation, then a bad one, so we'd just be seeing copies from here.
-      // Now we need to tweak the offset - by interpolating between the values to the left and right of the
-      // best offset, and shifting it a bit.  This is complex, and HACKY in this code (happy to take PRs!) -
-      // we need to do a curve fit on correlations[] around best_offset in order to better determine precise
-      // (anti-aliased) offset.
-
-      // we know best_offset >=1, 
-      // since foundGoodCorrelation cannot go to true until the second pass (offset=1), and 
-      // we can't drop into this clause until the following pass (else if).
       var shift = (correlations[best_offset+1] - correlations[best_offset-1])/correlations[best_offset];  
       return sampleRate/(best_offset+(8*shift));
     }
     lastCorrelation = correlation;
   }
   if (best_correlation > 0.01) {
-    // console.log("f = " + sampleRate/best_offset + "Hz (rms: " + rms + " confidence: " + best_correlation + ")")
     return sampleRate/best_offset;
   }
   return -1;
-//  var best_frequency = sampleRate/best_offset;
-}
+};

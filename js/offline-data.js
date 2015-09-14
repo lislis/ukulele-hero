@@ -15,6 +15,12 @@ offlineNotesArray = [];
 
 // songToPlay = 'big-jet-plane.mp3';
 songToPlay = 'guitar-loop.wav';
+playCtx = new AudioContext();
+playSource = playCtx.createBufferSource();
+playGain = playCtx.createGain();
+playGain.gain.value = 1;
+playSource.connect(playGain);
+playGain.connect(playCtx.destination);
 
 
 function prepareOfflineData() {
@@ -46,9 +52,16 @@ function prepareOfflineData() {
         toggleScreen('stage');
         prepareUserInput();
         visualizePlayalong();
-      });
 
-      //offlineSource.loop = true;
+        playSource.buffer = renderedBuffer;
+        
+        // playSource.start();
+      }).catch(function(err) {
+        console.log('Rendering failed: ' + err);
+        // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
+      });;
+
+      // offlineSource.loop = true;
       // offlineCtx.startRendering().then(function(renderedBuffer) {
       //   console.log('Rendering completed successfully');
       //   var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -68,5 +81,10 @@ function prepareOfflineData() {
   }
   request.send();
 }
-
 prepareOfflineData();
+
+
+function playOfflineData() {
+
+}
+

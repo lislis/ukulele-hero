@@ -30,5 +30,5 @@ document.querySelector('[data-screen="allowmic"]').addEventListener('click', fun
 });
 
 document.querySelector('[data-screen="juststart"]').addEventListener('click', function(ev) {
-  gameloop();
+  startGame();
 });

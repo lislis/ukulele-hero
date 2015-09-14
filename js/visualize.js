@@ -1,20 +1,6 @@
 
-
-// songSeconds = 60;
-// offlineCtx = new OfflineAudioContext(1, 44100 * songSeconds, 44100);
-
-// offlineAnalyser = offlineCtx.createAnalyser();
-// offlineAnalyser.fftSize = 4096;
-
-// offlineProcessor = offlineCtx.createScriptProcessor(16384, 1, 1);
-// offlineProcessor.connect(offlineCtx.destination);
-
-// offlineSource = offlineCtx.createBufferSource();
-// offlineFFTArray = [];
-// offlineNotesArray = [];
-
 timePlayed = 0;
-
+var myEvent = new Event('noteChange');
 
 var visualizePlayalong = function() {
   var canvas = document.querySelector('#playalong');
@@ -41,7 +27,7 @@ var visualizePlayalong = function() {
   var draw = function() {
     raf = window.requestAnimationFrame(draw);
     ctx.clearRect(0, 0, width, height);
-    // drawIndicator();
+    drawIndicator();
     drawGraph();
     drawNotes();
   };
@@ -84,6 +70,8 @@ var visualizePlayalong = function() {
               ctx.fillStyle = "black";
             }
             ctx.fillText(offlineNotesArray[j], (j * sampleWidths) + ((width - actualUsedWidth) / 2), 20);
+            window.dispatchEvent(myEvent, { 'detail': offlineNotesArray[j]});
+
           }
         } else if (prevNote === '') {
           prevNote = offlineNotesArray[j];
@@ -96,7 +84,6 @@ var visualizePlayalong = function() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, graphBase, width, graphStroke);
 
-    // bars
     for (var i = 0; i < numOfBars; i++) {
       var barHeight = (Math.max.apply(Math, offlineFFTArray[i]) * 0.8);
 
@@ -111,4 +98,5 @@ var visualizePlayalong = function() {
   };
 
   draw();
+
 };
