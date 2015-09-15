@@ -13,7 +13,7 @@ var visualizePlayalong = function() {
   var graphBase = height - (graphStroke * 10);
 
   var barMargin = 5;
-  var numOfBars = (offlineFFTArray.length * (game.songDuration * 2 / offlineFFTArray.length));
+  var numOfBars = (offline.offlineFFTArray.length * (game.songDuration * 2 / offline.offlineFFTArray.length));
   var barWidth = Math.floor(width / numOfBars);
   var actualUsedWidth = numOfBars * barWidth;
 
@@ -46,25 +46,25 @@ var visualizePlayalong = function() {
   var drawNotes = function() {
     ctx.font = "20px League Spartan";
     var prevNote = '';
-    var sampleWidths = actualUsedWidth / offlineFFTArray.length;
+    var sampleWidths = actualUsedWidth / offline.offlineFFTArray.length;
 
-    for (var j = 0; j < offlineNotesArray.length; j++) {
-      if (offlineNotesArray[j] !== undefined) {
-        if (prevNote !== offlineNotesArray[j]) {
-          prevNote = offlineNotesArray[j];
-          if (offlineNotesArray[j + 1] !== offlineNotesArray[j - 1]) { // if only one sample is different
+    for (var j = 0; j < offline.offlineNotesArray.length; j++) {
+      if (offline.offlineNotesArray[j] !== undefined) {
+        if (prevNote !== offline.offlineNotesArray[j]) {
+          prevNote = offline.offlineNotesArray[j];
+          if (offline.offlineNotesArray[j + 1] !== offline.offlineNotesArray[j - 1]) { // if only one sample is different
 
             if (((j - 4) * sampleWidths) + ((width - actualUsedWidth) / 2) > indicatorPosition) {
               ctx.fillStyle = "white";
             } else {
               ctx.fillStyle = "black";
             }
-            ctx.fillText(offlineNotesArray[j], (j * sampleWidths) + ((width - actualUsedWidth) / 2), 20);
-            window.dispatchEvent(myEvent, { 'detail': offlineNotesArray[j]});
+            ctx.fillText(offline.offlineNotesArray[j], (j * sampleWidths) + ((width - actualUsedWidth) / 2), 20);
+            window.dispatchEvent(myEvent, { 'detail': offline.offlineNotesArray[j]});
 
           }
         } else if (prevNote === '') {
-          prevNote = offlineNotesArray[j];
+          prevNote = offline.offlineNotesArray[j];
         }
       }
     };
@@ -75,7 +75,7 @@ var visualizePlayalong = function() {
     ctx.fillRect(0, graphBase, width, graphStroke);
 
     for (var i = 0; i < numOfBars; i++) {
-      var barHeight = (Math.max.apply(Math, offlineFFTArray[i]) * 0.8);
+      var barHeight = (Math.max.apply(Math, offline.offlineFFTArray[i]) * 0.8);
 
       if (((i - 4) * barWidth) + ((width - actualUsedWidth) / 2) > indicatorPosition) {
         ctx.fillStyle = "white";

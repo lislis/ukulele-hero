@@ -5,82 +5,85 @@ var Offline = function() {
 
 Offline.prototype = {
 
+  offlineCtx: new OfflineAudioContext(1, 44100 * game.songDuration, 44100),
+  offlineAnalyser: null,
+  offlineProcessor: null,
+  offlineSource: null,
+  offlineFFTArray: [],
+  offlineNotesArray: [],
 
-
+  // songToPlay: 'big-jet-plane.mp3',
+  songToPlay: 'guitar-loop.wav',
+  
+  playCtx: new AudioContext(),
+  playSource: null,
+  playGain: null,
+  
 
   init: function() {
+    this.offlineAnalyser = this.offlineCtx.createAnalyser();
+    this.offlineProcessor = this.offlineCtx.createScriptProcessor(16384, 1, 1);
+    this.offlineSource = this.offlineCtx.createBufferSource();
+    this.offlineAnalyser.fftSize = 4096;
+    this.offlineProcessor.connect(this.offlineCtx.destination);
 
+    this.playSource = this.playCtx.createBufferSource();
+    this.playGain = this.playCtx.createGain();
+    this.playGain.gain.value = 1;
+    this.playSource.connect(this.playGain);
+    this.playGain.connect(this.playCtx.destination);
+
+    this.loadSong();
+  },
+
+  loadSong: function() {
+    var self = this;
+    var request = new XMLHttpRequest();
+    request.open('GET', this.songToPlay, true);
+    request.responseType = 'arraybuffer';
+
+    request.onload = function() {
+      var audioData = request.response;
+
+      self.offlineCtx.decodeAudioData(audioData, function(buffer) {
+        var decodedOfflineBuffer = buffer;
+        self.offlineSource.buffer = decodedOfflineBuffer;
+        self.offlineSource.connect(self.offlineAnalyser);
+        self.offlineAnalyser.connect(self.offlineProcessor);
+
+        self.offlineProcessor.onaudioprocess = self.onAudioProcess.bind(self);
+
+        self.offlineSource.start();
+        self.offlineCtx.startRendering()
+          .then(self.playSong.bind(self))
+          .catch(function(err) {
+            console.log('Rendering failed: ' + err);
+          });
+      });
+    }
+    request.send();
+  },
+
+  onAudioProcess: function(e) {
+    var data =  new Uint8Array(this.offlineAnalyser.frequencyBinCount);
+    var biggestBin, note;
+
+    this.offlineAnalyser.getByteFrequencyData(data);
+    biggestBin = getBiggestBin(data);
+    note = noteFromPitch(calcFreqFromBin(biggestBin, this.offlineCtx.sampleRate, this.offlineAnalyser.fftSize));
+    this.offlineNotesArray.push(note);
+    this.offlineFFTArray.push(data);
+  },
+
+  playSong: function(buff) {
+
+    console.log('done');
+    toggleScreen('stage');
+    prepareUserInput();
+
+    this.playSource.buffer = this.offlineSource.buffer;
+    // this.playSource.start();
   }
 }
 
 var offline = new Offline();
-
-
-game.songDuration = 60;
-offlineCtx = new OfflineAudioContext(1, 44100 * game.songDuration, 44100);
-
-offlineAnalyser = offlineCtx.createAnalyser();
-offlineAnalyser.fftSize = 4096;
-
-offlineProcessor = offlineCtx.createScriptProcessor(16384, 1, 1);
-offlineProcessor.connect(offlineCtx.destination);
-
-offlineSource = offlineCtx.createBufferSource();
-offlineFFTArray = [];
-offlineNotesArray = [];
-
-// songToPlay = 'big-jet-plane.mp3';
-songToPlay = 'guitar-loop.wav';
-playCtx = new AudioContext();
-playSource = playCtx.createBufferSource();
-playGain = playCtx.createGain();
-playGain.gain.value = 1;
-playSource.connect(playGain);
-playGain.connect(playCtx.destination);
-
-
-function prepareOfflineData() {
-  var request = new XMLHttpRequest();
-  request.open('GET', songToPlay, true);
-  request.responseType = 'arraybuffer';
-
-  request.onload = function() {
-    var audioData = request.response;
-
-    offlineCtx.decodeAudioData(audioData, function(buffer) {
-      var decodedOfflineBuffer = buffer;
-      offlineSource.buffer = decodedOfflineBuffer;
-      offlineSource.connect(offlineAnalyser);
-      offlineAnalyser.connect(offlineProcessor);
-
-      offlineProcessor.onaudioprocess = function(e){
-        var data =  new Uint8Array(offlineAnalyser.frequencyBinCount);
-        offlineAnalyser.getByteFrequencyData(data);
-        var biggestBin = getBiggestBin(data);
-        var note = noteFromPitch(calcFreqFromBin(biggestBin, offlineCtx.sampleRate, offlineAnalyser.fftSize));
-        offlineNotesArray.push(note);
-        offlineFFTArray.push(data);
-      }
-
-      offlineSource.start();
-      offlineCtx.startRendering().then(function(renderedBuffer) {
-
-        console.log('done');
-        toggleScreen('stage');
-        prepareUserInput();
-
-        playSource.buffer = offlineSource.buffer;
-        // offlineSource.connect(offlineCtx.destination);
-        // playSource.start();
-      }).catch(function(err) {
-        console.log('Rendering failed: ' + err);
-      });;
-
-    });
-  }
-  request.send();
-}
-prepareOfflineData();
-
-
-

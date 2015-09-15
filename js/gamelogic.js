@@ -82,6 +82,5 @@ var game = new Game();
 // normalize notes first??
 // calc score
 // create gain node and make it work
-// create audio buffer to live play from offline buffer
 // rewrite timing functions to work with time calc from this context
 
