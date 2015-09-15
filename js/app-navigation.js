@@ -26,7 +26,7 @@ document.querySelector('.js-toggle[data-screen="loading"]').addEventListener('cl
 });
 
 document.querySelector('[data-screen="allowmic"]').addEventListener('click', function(ev) {
-  prepareUserInput();
+  live.prepareUserInput();
 });
 
 document.querySelector('[data-screen="juststart"]').addEventListener('click', function(ev) {
