@@ -1,7 +1,23 @@
-// LOAD THE SONG
 
-songSeconds = 60;
-offlineCtx = new OfflineAudioContext(1, 44100 * songSeconds, 44100);
+var Offline = function() {
+  this.init();
+}
+
+Offline.prototype = {
+
+
+
+
+  init: function() {
+
+  }
+}
+
+var offline = new Offline();
+
+
+game.songDuration = 60;
+offlineCtx = new OfflineAudioContext(1, 44100 * game.songDuration, 44100);
 
 offlineAnalyser = offlineCtx.createAnalyser();
 offlineAnalyser.fftSize = 4096;
@@ -45,6 +61,7 @@ function prepareOfflineData() {
         offlineNotesArray.push(note);
         offlineFFTArray.push(data);
       }
+
       offlineSource.start();
       offlineCtx.startRendering().then(function(renderedBuffer) {
 
@@ -52,30 +69,13 @@ function prepareOfflineData() {
         toggleScreen('stage');
         prepareUserInput();
 
-        playSource.buffer = renderedBuffer;
-        
+        playSource.buffer = offlineSource.buffer;
+        // offlineSource.connect(offlineCtx.destination);
         // playSource.start();
       }).catch(function(err) {
         console.log('Rendering failed: ' + err);
-        // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
       });;
 
-      // offlineSource.loop = true;
-      // offlineCtx.startRendering().then(function(renderedBuffer) {
-      //   console.log('Rendering completed successfully');
-      //   var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      //   var song = audioCtx.createBufferSource();
-      //   song.buffer = renderedBuffer;
-
-      //   song.connect(audioCtx.destination);
-
-      //   // play.onclick = function() {
-      //   //   song.start();
-      //   // }
-      // }).catch(function(err) {
-      //     console.log('Rendering failed: ' + err);
-      //     // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
-      // });
     });
   }
   request.send();
@@ -83,7 +83,4 @@ function prepareOfflineData() {
 prepareOfflineData();
 
 
-function playOfflineData() {
-
-}
 

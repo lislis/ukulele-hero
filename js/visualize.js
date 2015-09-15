@@ -1,5 +1,4 @@
 
-timePlayed = 0;
 var myEvent = new Event('noteChange');
 
 var visualizePlayalong = function() {
@@ -14,7 +13,7 @@ var visualizePlayalong = function() {
   var graphBase = height - (graphStroke * 10);
 
   var barMargin = 5;
-  var numOfBars = (offlineFFTArray.length * (songSeconds * 2 / offlineFFTArray.length));
+  var numOfBars = (offlineFFTArray.length * (game.songDuration * 2 / offlineFFTArray.length));
   var barWidth = Math.floor(width / numOfBars);
   var actualUsedWidth = numOfBars * barWidth;
 
@@ -36,21 +35,12 @@ var visualizePlayalong = function() {
     ctx.fillStyle = "blue";
     var indicatorMaxLength = actualUsedWidth;
     var indicatorStart = (width - actualUsedWidth) / 2;
-    var timeoffset = timePlayed / songSeconds;
+    var timeoffset = game.timeIn / game.songDuration;
     indicatorPosition = actualUsedWidth * timeoffset;
     if (indicatorPosition < indicatorMaxLength) {
       ctx.fillRect(indicatorStart, height - (graphStroke * 5), indicatorPosition, graphStroke);
     }
 
-
-    // if(!lastCalledTime) {
-    //   lastCalledTime = Date.now();
-    //   return;
-    // }
-    // delta = (new Date().getTime() - lastCalledTime)/1000;
-    // lastCalledTime = Date.now();
-    // timePlayed += delta;
-    // document.querySelector('#timeleft').innerHTML = parseInt(songSeconds) - Math.ceil(timePlayed);
   };
 
   var drawNotes = function() {

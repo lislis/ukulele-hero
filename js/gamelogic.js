@@ -47,7 +47,16 @@ Game.prototype = {
       this.lastCalledTime = Date.now();
       this.timeIn += this.delta;
 
-      return parseInt(this.songDuration) - Math.ceil(this.timeIn);
+      if (this.timeIn < this.songDuration) {
+        return parseInt(this.songDuration) - Math.ceil(this.timeIn);
+      } else {
+        
+        // fire event!!!
+        // end the game
+        return 0;
+
+      }
+      
     } else {
       return this.timeIn;
     }
@@ -56,8 +65,8 @@ Game.prototype = {
   actions: function() {
 
     window.addEventListener('noteChange', function (e) {
-      console.log('New note: ' + e.detail);
-      console.log('Note played: ' + liveNote);
+      // console.log('New note: ' + e.detail);
+      // console.log('Note played: ' + liveNote);
       if (e.detail != undefined) {
         if (e.detail === liveNote) {
           this.score += 100;
