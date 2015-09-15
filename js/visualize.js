@@ -1,52 +1,60 @@
 
-var myEvent = new Event('noteChange');
 
-var visualizePlayalong = function() {
-  var canvas = document.querySelector('#playalong');
-  var ctx = canvas.getContext('2d');
-  var width = Math.floor(window.innerWidth / 100 * 90);
-  var height = 300;
-  canvas.width = width;
-  canvas.height = height;
+var Visual = function() {
+  this.init();
+}
 
-  var graphStroke = 5;
-  var graphBase = height - (graphStroke * 10);
+Visual.prototype = {
 
-  var barMargin = 5;
-  var numOfBars = (offline.offlineFFTArray.length * (game.songDuration * 2 / offline.offlineFFTArray.length));
-  var barWidth = Math.floor(width / numOfBars);
-  var actualUsedWidth = numOfBars * barWidth;
+  canvas: document.querySelector('#playalong'),
+  ctx: null,
+  width: Math.floor(window.innerWidth / 100 * 90),
+  height: 300,
 
-  var lastCalledTime;
-  var delta;
-  var indicatorPosition = 0;
+  graphStroke: 5,
+  graphBase: null,
 
-  var raf;
+  barMargin: 5,
+  numOfBars: null,
+  barWidth: null,
+  actualUsedWidth: null,
 
-  var draw = function() {
-    raf = window.requestAnimationFrame(draw);
-    ctx.clearRect(0, 0, width, height);
-    drawIndicator();
-    drawGraph();
-    drawNotes();
-  };
+  lastCalledTime: null,
+  delta: null,
+  indicatorPosition: 0,
 
-  var drawIndicator = function() {
-    ctx.fillStyle = "blue";
-    var indicatorMaxLength = actualUsedWidth;
-    var indicatorStart = (width - actualUsedWidth) / 2;
+  init: function() {
+    this.ctx = this.canvas.getContext('2d');
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+    this.graphBase = this.height - (this.graphStroke * 10);
+    this.numOfBars = (offline.offlineFFTArray.length * (game.songDuration * 2 / offline.offlineFFTArray.length));
+    this.barWidth = Math.floor(this.width / this.numOfBars);
+    this.actualUsedWidth = this.numOfBars * this.barWidth;
+  },
+
+  draw: function() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.drawIndicator();
+    this.drawGraph();
+    this.drawNotes();
+  },
+
+  drawIndicator: function() {
+    this.ctx.fillStyle = "blue";
+    var indicatorMaxLength = this.actualUsedWidth;
+    var indicatorStart = (this.width - this.actualUsedWidth) / 2;
     var timeoffset = game.timeIn / game.songDuration;
-    indicatorPosition = actualUsedWidth * timeoffset;
-    if (indicatorPosition < indicatorMaxLength) {
-      ctx.fillRect(indicatorStart, height - (graphStroke * 5), indicatorPosition, graphStroke);
+    this.indicatorPosition = this.actualUsedWidth * timeoffset;
+    if (this.indicatorPosition < indicatorMaxLength) {
+      this.ctx.fillRect(indicatorStart, this.height - (this.graphStroke * 5), this.indicatorPosition, this.graphStroke);
     }
+  },
 
-  };
-
-  var drawNotes = function() {
-    ctx.font = "20px League Spartan";
+  drawNotes: function() {
+    this.ctx.font = "20px League Spartan";
     var prevNote = '';
-    var sampleWidths = actualUsedWidth / offline.offlineFFTArray.length;
+    var sampleWidths = this.actualUsedWidth / offline.offlineFFTArray.length;
 
     for (var j = 0; j < offline.offlineNotesArray.length; j++) {
       if (offline.offlineNotesArray[j] !== undefined) {
@@ -54,13 +62,13 @@ var visualizePlayalong = function() {
           prevNote = offline.offlineNotesArray[j];
           if (offline.offlineNotesArray[j + 1] !== offline.offlineNotesArray[j - 1]) { // if only one sample is different
 
-            if (((j - 4) * sampleWidths) + ((width - actualUsedWidth) / 2) > indicatorPosition) {
-              ctx.fillStyle = "white";
+            if (((j - 4) * sampleWidths) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
+              this.ctx.fillStyle = "white";
             } else {
-              ctx.fillStyle = "black";
+              this.ctx.fillStyle = "black";
             }
-            ctx.fillText(offline.offlineNotesArray[j], (j * sampleWidths) + ((width - actualUsedWidth) / 2), 20);
-            window.dispatchEvent(myEvent, { 'detail': offline.offlineNotesArray[j]});
+            this.ctx.fillText(offline.offlineNotesArray[j], (j * sampleWidths) + ((this.width - this.actualUsedWidth) / 2), 20);
+            window.dispatchEvent(noteChangeEv, { 'detail': offline.offlineNotesArray[j]});
 
           }
         } else if (prevNote === '') {
@@ -68,25 +76,25 @@ var visualizePlayalong = function() {
         }
       }
     };
-  };
+  },
 
-  var drawGraph = function() {
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, graphBase, width, graphStroke);
+  drawGraph: function() {
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(0, this.graphBase, this.width, this.graphStroke);
 
-    for (var i = 0; i < numOfBars; i++) {
+
+    for (var i = 0; i < this.numOfBars; i++) {
       var barHeight = (Math.max.apply(Math, offline.offlineFFTArray[i]) * 0.8);
 
-      if (((i - 4) * barWidth) + ((width - actualUsedWidth) / 2) > indicatorPosition) {
-        ctx.fillStyle = "white";
+      if (((i - 4) * this.barWidth) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
+        this.ctx.fillStyle = "white";
       } else {
-        ctx.fillStyle = "black";
+        this.ctx.fillStyle = "black";
       }
 
-      ctx.fillRect((i * barWidth) + ((width - actualUsedWidth) / 2), graphBase - barHeight, barWidth, barHeight);
+      this.ctx.fillRect((i * this.barWidth) + ((this.width - this.actualUsedWidth) / 2), this.graphBase - barHeight, this.barWidth, barHeight);
     };
-  };
+  }
 
-  draw();
+}
 
-};

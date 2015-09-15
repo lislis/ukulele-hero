@@ -79,6 +79,7 @@ Offline.prototype = {
 
     console.log('done');
     toggleScreen('stage');
+    visual = new Visual();
     live.prepareUserInput();
 
     this.playSource.buffer = this.offlineSource.buffer;

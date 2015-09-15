@@ -1,5 +1,9 @@
 
 
+var noteChangeEv = new Event('noteChange');
+
+var visual;
+
 var Game = function() {
   this.init();
 }
@@ -24,7 +28,6 @@ Game.prototype = {
     console.log('start the game');
     
     this.isCountingDown = true;
-    visualizePlayalong();
     this.loop();
   },
 
@@ -32,6 +35,7 @@ Game.prototype = {
     var self = this;
     window.requestAnimationFrame(function() {self.loop();});
     this.drawTime();
+    visual.draw();
   },
 
   drawTime: function() {
