@@ -43,14 +43,14 @@ var visualizePlayalong = function() {
     }
 
 
-    if(!lastCalledTime) {
-      lastCalledTime = Date.now();
-      return;
-    }
-    delta = (new Date().getTime() - lastCalledTime)/1000;
-    lastCalledTime = Date.now();
-    timePlayed += delta;
-    document.querySelector('#timeleft').innerHTML = parseInt(songSeconds) - Math.ceil(timePlayed);
+    // if(!lastCalledTime) {
+    //   lastCalledTime = Date.now();
+    //   return;
+    // }
+    // delta = (new Date().getTime() - lastCalledTime)/1000;
+    // lastCalledTime = Date.now();
+    // timePlayed += delta;
+    // document.querySelector('#timeleft').innerHTML = parseInt(songSeconds) - Math.ceil(timePlayed);
   };
 
   var drawNotes = function() {

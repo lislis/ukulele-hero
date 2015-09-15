@@ -1,45 +1,78 @@
 
-document.querySelector('#timeleft').innerHTML = parseInt(songSeconds) - Math.ceil(timePlayed);
 
-var score = 0;
+var Game = function() {
+  this.init();
+}
+
+Game.prototype = {
+
+  isCountingDown: false,
+  timeleftElem: document.querySelector('#timeleft'),
+  songDuration: 60,
+  timeIn: 0,
+  lastCalledTime: null,
+  delta: null,
+
+  score: 0,
+
+  init: function() {
+    this.actions();
+  },
+
+  start: function() {
+    document.querySelector('#startgame').classList.add('is-hidden');
+    console.log('start the game');
+    
+    this.isCountingDown = true;
+    visualizePlayalong();
+    this.loop();
+  },
+
+  loop: function() {
+    var self = this;
+    window.requestAnimationFrame(function() {self.loop();});
+    this.drawTime();
+  },
+
+  drawTime: function() {
+    this.timeleftElem.innerHTML = this.countdownTime();
+  },
+
+  countdownTime: function() {
+    if (this.isCountingDown) {
+      if(!this.lastCalledTime) {
+        this.lastCalledTime = Date.now();
+      }
+      this.delta = (new Date().getTime() - this.lastCalledTime)/1000;
+      this.lastCalledTime = Date.now();
+      this.timeIn += this.delta;
+
+      return parseInt(this.songDuration) - Math.ceil(this.timeIn);
+    } else {
+      return this.timeIn;
+    }
+  },
+
+  actions: function() {
+
+    window.addEventListener('noteChange', function (e) {
+      console.log('New note: ' + e.detail);
+      console.log('Note played: ' + liveNote);
+      if (e.detail != undefined) {
+        if (e.detail === liveNote) {
+          this.score += 100;
+          document.querySelector('#score').innerHTML = this.score;
+        }
+      }
+    }, false);
+  }
+}
+
+var game = new Game();
 
 // normalize notes first??
 // calc score
 // create gain node and make it work
-// get new Ctx from input stream, auto correlate
+// create audio buffer to live play from offline buffer
+// rewrite timing functions to work with time calc from this context
 
-
-var startGame = function() {
-  document.querySelector('#startgame').classList.add('is-hidden');
-  console.log('game is running');
-
-
-  gameloop();
-
-  // create audio buffer to live play from offline buffer
-  // rewrite timing functions to work with time calc from this context
-};
-
-var loopId;
-var gameloop = function() {
-  loopId = window.requestAnimationFrame(gameloop);
-  // drawViz();
-
-  // console.log(liveNote);
-}
-
-
-window.addEventListener('noteChange', function (e) {
-
-  console.log('New note: ' + e.detail);
-  console.log('Note played: ' + liveNote);
-
-  if (e.detail != undefined) {
-    if (e.detail === liveNote) {
-      score += 100;
-      document.querySelector('#score').innerHTML = score;
-    }
-  }
-  
-
-}, false);
