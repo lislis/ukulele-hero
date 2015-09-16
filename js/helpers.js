@@ -8,6 +8,14 @@ var calcFreqFromBin = function(binNum, sampleRate, fftSize) {
   return (sampleRate/fftSize) * binNum;
 };
 
+var toggleScreen = function(newState) {
+  removeClasses('.screen', 'is-active');
+  document.querySelector('#' + newState).classList.add('is-active');
+};
+
+//
+// from https://webaudiodemos.appspot.com/pitchdetect/
+//
 var noteFromPitch = function( frequency ) {
   var noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   var noteNum = 12 * (Math.log( frequency / 440 )/Math.log(2) );
@@ -15,38 +23,7 @@ var noteFromPitch = function( frequency ) {
   return noteStrings[noteStringIndex%12];
 };
 
-var toggleScreen = function(newState) {
-  removeClasses('.screen', 'is-active');
-  document.querySelector('#' + newState).classList.add('is-active');
-};
 
-
-// from https://remysharp.com/2010/07/21/throttling-function-calls
-var throttle = function(fn, threshhold, scope) {
-  threshhold || (threshhold = 250);
-  var last,
-      deferTimer;
-  return function () {
-    var context = scope || this;
-
-    var now = +new Date,
-        args = arguments;
-    if (last && now < last + threshhold) {
-      // hold on to it
-      clearTimeout(deferTimer);
-      deferTimer = setTimeout(function () {
-        last = now;
-        fn.apply(context, args);
-      }, threshhold);
-    } else {
-      last = now;
-      fn.apply(context, args);
-    }
-  };
-};
-
-
-// from https://webaudiodemos.appspot.com/pitchdetect/
 var autoCorrelate = function(buf, sampleRate) {
   var MIN_SAMPLES = 0; // look here in case of weird things
   var SIZE = buf.length;

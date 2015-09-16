@@ -31,6 +31,8 @@ Visual.prototype = {
     this.numOfBars = (offline.offlineFFTArray.length * (game.songDuration * 2 / offline.offlineFFTArray.length));
     this.barWidth = Math.floor(this.width / this.numOfBars);
     this.actualUsedWidth = this.numOfBars * this.barWidth;
+
+    console.log(offline.offlineNotesArray);
   },
 
   draw: function() {
@@ -68,8 +70,7 @@ Visual.prototype = {
               this.ctx.fillStyle = "black";
             }
             this.ctx.fillText(offline.offlineNotesArray[j], (j * sampleWidths) + ((this.width - this.actualUsedWidth) / 2), 20);
-            window.dispatchEvent(noteChangeEv, { 'detail': offline.offlineNotesArray[j]});
-            console.log('or does it');
+
           }
         } else if (prevNote === '') {
           prevNote = offline.offlineNotesArray[j];

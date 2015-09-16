@@ -18,8 +18,13 @@ Game.prototype = {
   lastCalledTime: null,
   delta: null,
 
-  score: 0,
+  scoreTotal: null,
+  score: null,
   liveNote: null,
+  raf: null,
+  samplesToTimeRatio: null,
+  scoreSamples: null,
+
 
   init: function() {
     this.actions();
@@ -28,14 +33,47 @@ Game.prototype = {
   start: function() {
     document.querySelector('#startgame').classList.add('is-hidden');
     this.isCountingDown = true;
+    this.samplesToTimeRatio =  offline.offlineNotesArray.length / this.songDuration;
+    this.scoreSamples = this.getScoreSamples();
+    this.score = this.scoreSamples.length;
+    this.scoreTotal = this.scoreSamples.length;
+    document.querySelector('#score').innerHTML = 100 - (Math.floor(this.score / this.scoreTotal * 100)) + '%';
     this.loop();
   },
 
   loop: function() {
     var self = this;
-    window.requestAnimationFrame(function() {self.loop();});
+    self.raf = window.requestAnimationFrame(self.loop.bind(self));
     this.drawTime();
+    live.getInputPitch();
     visual.draw();
+    this.checkNotesPlayed();
+  },
+
+  getScoreSamples: function() {
+    var array = [];
+    for (var j = 0; j < offline.offlineNotesArray.length; j++) {
+      if (offline.offlineNotesArray[j] !== undefined) {
+        if (offline.offlineNotesArray[j - 1] !== offline.offlineNotesArray[j]) {
+          if (offline.offlineNotesArray[j + 1] !== offline.offlineNotesArray[j - 1]) {
+            array.push(j);
+          }
+        }
+      }
+    };
+    return array;
+  },
+
+  checkNotesPlayed: function() {
+
+    if (this.liveNote === offline.offlineNotesArray[Math.floor(this.timeIn * this.samplesToTimeRatio)]) {
+      if (this.scoreSamples.indexOf(Math.floor(this.timeIn * this.samplesToTimeRatio)) != -1) {
+        this.scoreSamples.splice(this.scoreSamples.indexOf(Math.floor(this.timeIn * this.samplesToTimeRatio)), 1);
+        this.score = this.scoreSamples.length;
+        console.log(this.scoreSamples);
+        document.querySelector('#score').innerHTML = 100 - (Math.floor(this.score / this.scoreTotal * 100)) + '%';
+      }
+    }
   },
 
   drawTime: function() {
@@ -64,28 +102,17 @@ Game.prototype = {
   },
 
   actions: function() {
-
-    window.addEventListener('noteChange', function (e) {
-      // console.log(e);
-      // console.log('New note: ' + e.detail);
-      // console.log('Note played: ' + this.liveNote);
-      if (e.detail != undefined) {
-        if (e.detail === this.liveNote) {
-          this.score += 100;
-          document.querySelector('#score').innerHTML = this.score;
-        }
-      }
-    }, false);
+    var self = this;
 
     window.addEventListener('gameEnd', function (e) {
+      document.querySelector('#songtitle').innerHTML = document.querySelector('.songlist li.is-active').innerHTML;
+
+      document.querySelector('#totalscore').innerHTML = 100 - (Math.floor(self.score / self.scoreTotal * 100)) + '%';
       toggleScreen('gameend');
+      offline.playSource.stop();
+      window.cancelAnimationFrame(self.raf);
     }, false);
   }
 }
 
 var game = new Game();
-
-// normalize notes first??
-// calc score
-// rewrite timing functions to work with time calc from this context
-

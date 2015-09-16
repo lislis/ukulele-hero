@@ -22,7 +22,6 @@ var removeClasses = function(elems, className) {
 });
 
 document.querySelector('.js-toggle[data-screen="loading"]').addEventListener('click', function(ev) {
-  // offline.prepareOfflineData();
   offline.loadSong();
 });
 

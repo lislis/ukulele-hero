@@ -49,28 +49,25 @@ Live.prototype = {
     var self = this;
     this.liveSource = this.liveCtx.createMediaStreamSource(stream);
     this.liveSource.connect(this.liveAnalyser);
-    this.getInputPitch();
-
+    this.getInputPitch.bind(self);
+    console.log('prepare screen');
     toggleScreen('choose');
   },
 
   getInputPitch: function(time) {
     var self = this;
-    throttle(function() {
-      var cycles = new Array;
-      this.liveAnalyser.getFloatTimeDomainData( this.buf );
-      var ac = autoCorrelate( this.buf, this.liveCtx.sampleRate );
-      var note;
-      if (ac !== -1) {
-        note = noteFromPitch(ac);
-      } else {
-        note = '-';
-      }
-      game.liveNote = note;
-      console.log(note);
-      document.querySelector('#userplayed').innerHTML = note;
-    });
-    window.requestAnimationFrame(self.getInputPitch.bind(self));
+    var cycles = new Array;
+    this.liveAnalyser.getFloatTimeDomainData( this.buf );
+    var ac = autoCorrelate( this.buf, this.liveCtx.sampleRate );
+    var note;
+    if (ac !== -1) {
+      note = noteFromPitch(ac);
+    } else {
+      note = '-';
+    }
+    game.liveNote = note;
+    // console.log(note);
+    document.querySelector('#userplayed').innerHTML = note;
   },
 
   onError: function(e)  {
