@@ -52,7 +52,7 @@ Visual.prototype = {
   },
 
   drawNotes: function() {
-    this.ctx.font = "30px League Spartan";
+    this.ctx.font = "22px League Spartan";
     var prevNote = '';
     var sampleWidths = this.actualUsedWidth / offline.offlineFFTArray.length;
 
@@ -67,7 +67,7 @@ Visual.prototype = {
             } else {
               this.ctx.fillStyle = "#025275";
             }
-            this.ctx.fillText(offline.offlineNotesArray[j], (j * sampleWidths) + ((this.width - this.actualUsedWidth) / 2), 30);
+            this.ctx.fillText(offline.offlineNotesArray[j], (j * sampleWidths) + ((this.width - this.actualUsedWidth) / 2), 22);
 
           }
         } else if (prevNote === '') {

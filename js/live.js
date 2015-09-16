@@ -50,7 +50,6 @@ Live.prototype = {
     this.liveSource = this.liveCtx.createMediaStreamSource(stream);
     this.liveSource.connect(this.liveAnalyser);
     this.getInputPitch.bind(self);
-    console.log('prepare screen');
     toggleScreen('choose');
   },
 
@@ -66,7 +65,6 @@ Live.prototype = {
       note = '-';
     }
     game.liveNote = note;
-    // console.log(note);
     document.querySelector('#userplayed').innerHTML = note;
   },
 
