@@ -13,7 +13,8 @@ Offline.prototype = {
   offlineNotesArray: [],
 
   // songToPlay: 'big-jet-plane.mp3',
-  songToPlay: 'guitar-loop.wav',
+  // songToPlay: 'guitar-loop.wav',
+  // songToPlay: game.songToPlay,
   
   playCtx: new AudioContext(),
   playSource: null,
@@ -32,8 +33,6 @@ Offline.prototype = {
     this.playGain.gain.value = 1;
     this.playSource.connect(this.playGain);
     this.playGain.connect(this.playCtx.destination);
-
-    this.loadSong();
   },
 
   loadSong: function() {
@@ -76,15 +75,16 @@ Offline.prototype = {
   },
 
   playSong: function(buff) {
+    var self = this;
 
-    console.log('done');
     toggleScreen('stage');
     visual = new Visual();
-    live.prepareUserInput();
-
     this.playSource.buffer = this.offlineSource.buffer;
-    // this.playSource.start();
+
+    document.querySelector('[data-screen="juststart"]').addEventListener('click', function() {
+      document.querySelector('#startgame').classList.add('is-hidden');
+      self.playSource.start();
+    });
   }
 }
-
 var offline = new Offline();

@@ -5,22 +5,24 @@
     <title>Ukulele Hero</title>
     <link rel="stylesheet" href="styles/fonts.css">
     <link rel="stylesheet" href="styles/main.css">
-    <!-- <script src="js/main.js" async defer></script> -->
     <script src="js/helpers.js" defer></script>
-    
-    <script src="js/app-navigation.js" defer></script>
-    
-    
     <script src="js/live.js" defer></script>
     <script src="js/gamelogic.js" defer></script>
     <script src="js/offline-data.js" defer></script>
     <script src="js/visualize.js" defer></script>
+    <script src="js/app-navigation.js" defer></script>
   </head>
   <body>
 
-    <div id="start" class="screen">
+    <div id="start" class="screen is-active">
       <h1>Ukulele Hero</h1>
-      <button type="button" data-screen="choose" class="js-toggle">Start</button>
+      <button type="button" data-screen="allowmic" class="js-toggle">Start</button>
+    </div>
+    <div id="allowmic" class="screen">
+      <h2>We need your input!</h2>
+      <p>Allow this website to use your computer's microphone, so we can actually hear what you play!</p>
+      <!-- <button type="button" data-screen="choose">take the mic</button> -->
+      <button type="button" data-screen="allowmic">take the mic</button>
     </div>
     <div id="choose" class="screen">
       <h2>Choose a song</h2>
@@ -31,7 +33,7 @@
       </ul>
       <button type="button" data-screen="loading" class="js-toggle is-hidden">choose selected song</button>
     </div>
-    <div id="loading" class="screen is-active">
+    <div id="loading" class="screen">
       <h2>Preparing the stage</h2>
       <div>
         <span class="indicator"></span>
@@ -44,31 +46,17 @@
         <div>Countdown: <span id="timeleft"></span></div>
         <div>You played: <span id="userplayed"></span></div>
       </div>
-      <!-- <div>
-        <div>Volume: <input type="range"></div>
-        <div>
-          <button type="button" data-screen="" class="js-toggle">Pause</button>
-          <button type="button" data-screen="" class="js-toggle">Stop</button>
-        </div>
-      </div> -->
-
       <div>
-        
         <canvas id="playalong"></canvas>
-
       </div>
-      
 
-      <div id="allowmic" class="popup is-hidden">
-        <h2>We need your input!</h2>
-        <p>Allow this website to use your computer's microphone, so we can actually hear what you play!</p>
-        <button type="button" data-screen="allowmic">take the mic</button>
-      </div>
-      <div id="startgame" class="popup is-hidden">
+      <div id="startgame" class="popup">
         <h2>Sweet!</h2>
         <p>We're all set. Hit the button to start!</p>
         <button type="button" data-screen="juststart">Start</button>
       </div>
+
+      <canvas id="prettyviz"></canvas>
     </div>
 
     <div id="gameend" class="screen">

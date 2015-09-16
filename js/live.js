@@ -14,9 +14,7 @@ Live.prototype = {
 
   init: function() {
     this.liveAnalyser = this.liveCtx.createAnalyser();
-    this.liveAnalyser.fftSize = 2048;
-
-    // this.prepareUserInput(); 
+    this.liveAnalyser.fftSize = 2048; 
   },
 
   getUserMedia: function(dictionary, callback) {
@@ -25,7 +23,6 @@ Live.prototype = {
         navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia;
-      // navigator.getUserMedia(dictionary, callback, this.onError);
     } catch (e) {
       alert('getUserMedia threw exception :' + e);
     }
@@ -34,7 +31,6 @@ Live.prototype = {
   prepareUserInput: function() {
     var self = this;
     this.getUserMedia();
-    document.querySelector('#allowmic').classList.remove('is-hidden');
     navigator.getUserMedia(
     {
       "audio": {
@@ -55,8 +51,7 @@ Live.prototype = {
     this.liveSource.connect(this.liveAnalyser);
     this.getInputPitch();
 
-    document.querySelector('#allowmic').classList.add('is-hidden');
-    document.querySelector('#startgame').classList.remove('is-hidden');
+    toggleScreen('choose');
   },
 
   getInputPitch: function(time) {
@@ -72,6 +67,7 @@ Live.prototype = {
         note = '-';
       }
       game.liveNote = note;
+      console.log(note);
       document.querySelector('#userplayed').innerHTML = note;
     });
     window.requestAnimationFrame(self.getInputPitch.bind(self));

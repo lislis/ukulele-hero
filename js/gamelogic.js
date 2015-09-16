@@ -66,7 +66,7 @@ Game.prototype = {
   actions: function() {
 
     window.addEventListener('noteChange', function (e) {
-      console.log(e);
+      // console.log(e);
       // console.log('New note: ' + e.detail);
       // console.log('Note played: ' + this.liveNote);
       if (e.detail != undefined) {

@@ -14,7 +14,7 @@ var removeClasses = function(elems, className) {
   item.addEventListener('click', function(ev) {
     removeClasses('.songlist li', 'is-active');
     this.classList.add('is-active');
-    songToPlay = this.dataset.url;
+    offline.songToPlay = this.dataset.url;
     if (document.querySelector('.songlist li.is-active')) {
       document.querySelector('.js-toggle[data-screen="loading"]').classList.remove('is-hidden');
     }
@@ -22,11 +22,14 @@ var removeClasses = function(elems, className) {
 });
 
 document.querySelector('.js-toggle[data-screen="loading"]').addEventListener('click', function(ev) {
-  prepareOfflineData();
+  // offline.prepareOfflineData();
+  offline.loadSong();
 });
 
-document.querySelector('[data-screen="allowmic"]').addEventListener('click', function(ev) {
-  live.prepareUserInput();
+[].forEach.call(document.querySelectorAll('[data-screen="allowmic"]'), function(item) {
+    item.addEventListener('click', function(ev) {
+    live.prepareUserInput();
+  });
 });
 
 document.querySelector('[data-screen="juststart"]').addEventListener('click', function(ev) {

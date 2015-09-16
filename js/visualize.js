@@ -82,7 +82,6 @@ Visual.prototype = {
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(0, this.graphBase, this.width, this.graphStroke);
 
-
     for (var i = 0; i < this.numOfBars; i++) {
       var barHeight = (Math.max.apply(Math, offline.offlineFFTArray[i]) * 0.8);
 
