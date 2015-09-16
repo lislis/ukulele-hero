@@ -15,11 +15,33 @@ body, h1, h2 {
   margin: 0;
 }
 
+h1 {
+  font-size: 60px;
+  margin-bottom: 4rem;
+  color: #5091bb;
+  text-shadow: 3px 1px 0px #025275;
+}
+h2 {
+  font-size: 40px;
+  margin-bottom: 2rem;
+  color: #5091bb;
+  text-shadow: 3px 1px 0px #025275;
+}
+
+p,
+.ui {
+  font-size: 22px;
+  margin-bottom: 2rem;
+  color: #025275;
+}
+
+
 .screen {
   width: 100vw;
   height: 100vh;
+  padding: 5em 2em;
   background-color: #ed5f87;
-
+  text-align: center;
   display: none;
 }
 .screen.is-active {
@@ -30,6 +52,8 @@ body, h1, h2 {
   list-style: none;
   padding: 0;
   margin: 2em 0 0;
+  width: 30vw;
+  margin: auto;
 }
 .songlist li {
   cursor: pointer;
@@ -37,13 +61,15 @@ body, h1, h2 {
   padding: 0.5em 0.5em 0.3em;
   line-height: 1;
   border: 2px solid transparent;
+  color: #025275;
+  border-radius: 8px;
 }
 .songlist li:hover {
-  background-color: #4f9bd4;
+  background-color: #5091bb;
 }
 .songlist li.is-active {
   padding: 0.5em 0.5em 0.3em;
-  border: 2px solid #4f9bd4;
+  border: 2px solid #5091bb;
   border-radius: 8px;
 }
 
@@ -55,6 +81,7 @@ body, h1, h2 {
   width: 2rem;
   height: 2rem;
   display: block;
+  margin: auto;
   border: 5px solid yellow;
   border-radius: 50%;
   position: relative;
@@ -71,7 +98,7 @@ body, h1, h2 {
   width: 3rem;
   height: 3rem;
   display: block;
-  border: 3px solid yellow;
+  border: 3px solid #fff400;
   border-radius: 50%;
   animation: spinningY 2s infinite ease;
 }
@@ -84,7 +111,7 @@ body, h1, h2 {
   width: 3rem;
   height: 3rem;
   display: block;
-  border: 3px solid yellow;
+  border: 3px solid #fff400;
   border-radius: 50%;
   animation: spinningX 3s infinite ease 500ms;
 }
@@ -110,40 +137,49 @@ button {
   font-family: 'League Spartan', Arial, sans-serif;
   background: none;
   padding: 0.5em 0.5em 0.3em;
-  border: 2px solid #fff866;
+  border: 2px solid #fff400;
   line-height: 1;
   border-radius: 8px;
   text-transform: uppercase;
   font-size: inherit;
-  color: #fff866;
+  color: #fff400;
   cursor: pointer;
+
+  transition: all 90ms linear;
 }
 button:hover {
-  background-color: #748185;
-  color: #fff400;
+  background-color: #fff400;
+  color: #ed5f87;
   border-color: #fff400;
+  box-shadow: 3px 2px #fff400;
+  
 }
 
 
 .popup {
-  border-radius: 8px;
-  padding: 2em;
-  width: 90vw;
-  margin: auto;
-  background-color: #4f9dba;
-
   position: absolute;
   top: 0px;
   left: 0px;
   right: 0px;
   bottom: 0px;
+  padding: 2em;
+  height: 300px;
+  width: 40vw;
   margin: auto;
-  height: 50vh;
+  background-color: #4f9dba;
+  border-radius: 8px;
 }
 
+.popup h2 {
+ color: #025275;
+ text-shadow: 3px 1px 0px #5091bb;
+}
+
+.popup button {
+
+}
 
 canvas {
   display: block;
   margin: auto;
-  border: solid;
 }

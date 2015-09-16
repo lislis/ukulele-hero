@@ -43,7 +43,7 @@ Visual.prototype = {
   },
 
   drawIndicator: function() {
-    this.ctx.fillStyle = "blue";
+    this.ctx.fillStyle = "#fff400";
     var indicatorMaxLength = this.actualUsedWidth;
     var indicatorStart = (this.width - this.actualUsedWidth) / 2;
     var timeoffset = game.timeIn / game.songDuration;
@@ -54,7 +54,8 @@ Visual.prototype = {
   },
 
   drawNotes: function() {
-    this.ctx.font = "20px League Spartan";
+
+    this.ctx.font = "30px League Spartan";
     var prevNote = '';
     var sampleWidths = this.actualUsedWidth / offline.offlineFFTArray.length;
 
@@ -65,11 +66,11 @@ Visual.prototype = {
           if (offline.offlineNotesArray[j + 1] !== offline.offlineNotesArray[j - 1]) { // if only one sample is different
 
             if (((j - 4) * sampleWidths) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
-              this.ctx.fillStyle = "white";
+              this.ctx.fillStyle = "#C5D8DF";
             } else {
-              this.ctx.fillStyle = "black";
+              this.ctx.fillStyle = "#025275";
             }
-            this.ctx.fillText(offline.offlineNotesArray[j], (j * sampleWidths) + ((this.width - this.actualUsedWidth) / 2), 20);
+            this.ctx.fillText(offline.offlineNotesArray[j], (j * sampleWidths) + ((this.width - this.actualUsedWidth) / 2), 30);
 
           }
         } else if (prevNote === '') {
@@ -80,16 +81,25 @@ Visual.prototype = {
   },
 
   drawGraph: function() {
-    this.ctx.fillStyle = "black";
+    this.ctx.fillStyle = "#025275";
     this.ctx.fillRect(0, this.graphBase, this.width, this.graphStroke);
+
+    var gradient1 = this.ctx.createLinearGradient(0, 0, 0, 300);
+    gradient1.addColorStop(1, "#025275");
+    gradient1.addColorStop(0, "#ffffff");
+
+    var gradient2 = this.ctx.createLinearGradient(0, 0, 0, 300);
+    gradient2.addColorStop(1, "#025275");
+    gradient2.addColorStop(0, "#509abb");
 
     for (var i = 0; i < this.numOfBars; i++) {
       var barHeight = (Math.max.apply(Math, offline.offlineFFTArray[i]) * 0.8);
 
       if (((i - 4) * this.barWidth) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
-        this.ctx.fillStyle = "white";
+
+        this.ctx.fillStyle = gradient1;
       } else {
-        this.ctx.fillStyle = "black";
+        this.ctx.fillStyle = gradient2;
       }
 
       this.ctx.fillRect((i * this.barWidth) + ((this.width - this.actualUsedWidth) / 2), this.graphBase - barHeight, this.barWidth, barHeight);

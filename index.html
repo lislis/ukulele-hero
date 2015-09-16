@@ -20,7 +20,7 @@
     </div>
     <div id="allowmic" class="screen">
       <h2>We need your input!</h2>
-      <p>Allow this website to use your computer's microphone, so we can actually hear what you play!</p>
+      <p>Allow this website to use your computer's microphone, <br> so we can actually hear what you play!</p>
       <!-- <button type="button" data-screen="choose">take the mic</button> -->
       <button type="button" data-screen="allowmic">take the mic</button>
     </div>
@@ -41,7 +41,7 @@
     </div>
     <div id="stage" class="screen">
 
-      <div>
+      <div class="ui">
         <div>Score: <span id="score"></span></div>
         <div>Countdown: <span id="timeleft"></span></div>
         <div>You played: <span id="userplayed"></span></div>
@@ -56,15 +56,12 @@
         <button type="button" data-screen="juststart">Start</button>
       </div>
 
-      <canvas id="prettyviz"></canvas>
+      <!-- <canvas id="prettyviz"></canvas> -->
     </div>
 
     <div id="gameend" class="screen">
       <h2>You completed <span id="songtitle"></span> with a score of <span id="totalscore"></span>!</h2>
       <button type="button" data-screen="start" class="js-toggle">Start over</button>
     </div>
-
-<!--     <canvas id="sine-wave" width="400" height="300"></canvas>
-    <canvas id="bar-graph" width="400" height="300"></canvas> -->
   </body>
 </html>
