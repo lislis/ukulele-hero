@@ -1,6 +1,7 @@
 
 
 var noteChangeEv = new Event('noteChange');
+var gameEndEv = new Event('gameEnd');
 
 var visual;
 
@@ -18,6 +19,7 @@ Game.prototype = {
   delta: null,
 
   score: 0,
+  liveNote: null,
 
   init: function() {
     this.actions();
@@ -25,8 +27,6 @@ Game.prototype = {
 
   start: function() {
     document.querySelector('#startgame').classList.add('is-hidden');
-    console.log('start the game');
-    
     this.isCountingDown = true;
     this.loop();
   },
@@ -54,11 +54,8 @@ Game.prototype = {
       if (this.timeIn < this.songDuration) {
         return parseInt(this.songDuration) - Math.ceil(this.timeIn);
       } else {
-        
-        // fire event!!!
-        // end the game
+        window.dispatchEvent(gameEndEv);
         return 0;
-
       }
       
     } else {
@@ -69,14 +66,19 @@ Game.prototype = {
   actions: function() {
 
     window.addEventListener('noteChange', function (e) {
+      console.log(e);
       // console.log('New note: ' + e.detail);
-      // console.log('Note played: ' + liveNote);
+      // console.log('Note played: ' + this.liveNote);
       if (e.detail != undefined) {
-        if (e.detail === liveNote) {
+        if (e.detail === this.liveNote) {
           this.score += 100;
           document.querySelector('#score').innerHTML = this.score;
         }
       }
+    }, false);
+
+    window.addEventListener('gameEnd', function (e) {
+      toggleScreen('gameend');
     }, false);
   }
 }
@@ -85,6 +87,5 @@ var game = new Game();
 
 // normalize notes first??
 // calc score
-// create gain node and make it work
 // rewrite timing functions to work with time calc from this context
 

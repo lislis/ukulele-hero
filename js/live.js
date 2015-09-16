@@ -71,7 +71,7 @@ Live.prototype = {
       } else {
         note = '-';
       }
-      liveNote = note;
+      game.liveNote = note;
       document.querySelector('#userplayed').innerHTML = note;
     });
     window.requestAnimationFrame(self.getInputPitch.bind(self));

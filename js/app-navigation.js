@@ -32,3 +32,7 @@ document.querySelector('[data-screen="allowmic"]').addEventListener('click', fun
 document.querySelector('[data-screen="juststart"]').addEventListener('click', function(ev) {
   game.start();
 });
+
+document.querySelector('[data-screen="start"]').addEventListener('click', function(ev) {
+  window.location.reload();
+});
