@@ -31,8 +31,6 @@ Visual.prototype = {
     this.numOfBars = (offline.offlineFFTArray.length * (game.songDuration * 2 / offline.offlineFFTArray.length));
     this.barWidth = Math.floor(this.width / this.numOfBars);
     this.actualUsedWidth = this.numOfBars * this.barWidth;
-
-    console.log(offline.offlineNotesArray);
   },
 
   draw: function() {
@@ -54,7 +52,6 @@ Visual.prototype = {
   },
 
   drawNotes: function() {
-
     this.ctx.font = "30px League Spartan";
     var prevNote = '';
     var sampleWidths = this.actualUsedWidth / offline.offlineFFTArray.length;
@@ -94,9 +91,7 @@ Visual.prototype = {
 
     for (var i = 0; i < this.numOfBars; i++) {
       var barHeight = (Math.max.apply(Math, offline.offlineFFTArray[i]) * 0.8);
-
       if (((i - 4) * this.barWidth) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
-
         this.ctx.fillStyle = gradient1;
       } else {
         this.ctx.fillStyle = gradient2;

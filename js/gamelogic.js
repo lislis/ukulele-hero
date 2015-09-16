@@ -65,12 +65,10 @@ Game.prototype = {
   },
 
   checkNotesPlayed: function() {
-
     if (this.liveNote === offline.offlineNotesArray[Math.floor(this.timeIn * this.samplesToTimeRatio)]) {
       if (this.scoreSamples.indexOf(Math.floor(this.timeIn * this.samplesToTimeRatio)) != -1) {
         this.scoreSamples.splice(this.scoreSamples.indexOf(Math.floor(this.timeIn * this.samplesToTimeRatio)), 1);
         this.score = this.scoreSamples.length;
-        console.log(this.scoreSamples);
         document.querySelector('#score').innerHTML = 100 - (Math.floor(this.score / this.scoreTotal * 100)) + '%';
       }
     }
@@ -103,10 +101,8 @@ Game.prototype = {
 
   actions: function() {
     var self = this;
-
     window.addEventListener('gameEnd', function (e) {
       document.querySelector('#songtitle').innerHTML = document.querySelector('.songlist li.is-active').innerHTML;
-
       document.querySelector('#totalscore').innerHTML = 100 - (Math.floor(self.score / self.scoreTotal * 100)) + '%';
       toggleScreen('gameend');
       offline.playSource.stop();
