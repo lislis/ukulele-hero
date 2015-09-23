@@ -62,7 +62,7 @@ Visual.prototype = {
           prevNote = offline.offlineNotesArray[j];
           if (offline.offlineNotesArray[j + 1] !== offline.offlineNotesArray[j - 1]) { // if only one sample is different
 
-            if (((j - 4) * sampleWidths) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
+            if (((j - 3) * sampleWidths) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
               this.ctx.fillStyle = "#C5D8DF";
             } else {
               this.ctx.fillStyle = "#025275";
@@ -91,7 +91,7 @@ Visual.prototype = {
 
     for (var i = 0; i < this.numOfBars; i++) {
       var barHeight = (Math.max.apply(Math, offline.offlineFFTArray[i]) * 0.8);
-      if (((i - 4) * this.barWidth) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
+      if (((i - 3) * this.barWidth) + ((this.width - this.actualUsedWidth) / 2) > this.indicatorPosition) {
         this.ctx.fillStyle = gradient1;
       } else {
         this.ctx.fillStyle = gradient2;
