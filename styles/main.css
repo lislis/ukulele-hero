@@ -18,14 +18,14 @@ body, h1, h2 {
 h1 {
   font-size: 80px;
   margin-bottom: 4rem;
-  color: #5091bb;
-  text-shadow: 3px 1px 0px #025275;
+  color: #025275;
+  /*text-shadow: 3px 1px 0px #025275;*/
 }
 h2 {
   font-size: 40px;
   margin-bottom: 2rem;
-  color: #5091bb;
-  text-shadow: 3px 1px 0px #025275;
+  color: #025275;
+  /*text-shadow: 3px 1px 0px #025275;*/
 }
 
 p,
