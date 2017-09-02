@@ -1,4 +1,4 @@
 # ukulele-hero
 A simple music game using webAudio
 
-Everything in progress, I'm sorry
+Not complete, barely playable and it will probably stay that way. Sorry! 
